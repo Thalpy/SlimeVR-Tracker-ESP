@@ -214,7 +214,7 @@ namespace SlimeVR
 
                 m_LastBundleSentAtMicros = now;
             #endif
-            
+
             #if PACKET_BUNDLING != PACKET_BUNDLING_DISABLED
                 networkConnection.beginBundle();
             #endif
