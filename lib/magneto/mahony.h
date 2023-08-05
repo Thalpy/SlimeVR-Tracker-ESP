@@ -26,25 +26,7 @@
 
 #include "helper_3dmath.h"
 
-template<typename T>
-class Mahony {
-
-    // These are the free parameters in the Mahony filter and fusion scheme,
-    // Kp for proportional feedback, Ki for integral
-    // with MPU-9250, angles start oscillating at Kp=40. Ki does not seem to help and is not required.
-    static constexpr float Kp = 10.0f;
-    static constexpr float Ki = 0.0f;
-
-public:
-    void update(T q[4], T ax, T ay, T az, T gx, T gy, T gz, T mx, T my, T mz, T deltat);
-    void update(T q[4], T ax, T ay, T az, T gx, T gy, T gz, T deltat);
-    
-private:
-    T ix = 0.0;
-    T iy = 0.0;
-    T iz = 0.0;
-};
-
-#include "mahony.hpp"
+void mahonyQuaternionUpdate(float q[4], float ax, float ay, float az, float gx, float gy, float gz, float deltat);
+void mahonyQuaternionUpdate(float q[4], float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz, float deltat);
 
 #endif /* _MAHONY_H_ */

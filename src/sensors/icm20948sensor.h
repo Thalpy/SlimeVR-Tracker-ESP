@@ -25,13 +25,12 @@
 
 #include <ICM_20948.h>
 #include "sensor.h"
-#include "SensorFusionDMP.h"
+#include <arduino-timer.h> // Used for periodically saving bias
 
 class ICM20948Sensor : public Sensor
 {
 public:
-    ICM20948Sensor(uint8_t id, uint8_t address, float rotation, uint8_t sclPin, uint8_t sdaPin)
-        : Sensor("ICM20948Sensor", IMU_ICM20948, id, address, rotation, sclPin, sdaPin) {}
+    ICM20948Sensor(uint8_t id, uint8_t address, float rotation) : Sensor("ICM20948Sensor", IMU_ICM20948, id, address, rotation) {}
     ~ICM20948Sensor() override = default;
     void motionSetup() override final;
     void postSetup() override {
@@ -47,7 +46,9 @@ private:
     unsigned long lastData = 0;
     unsigned long lastDataSent = 0;
     int bias_save_counter = 0;
-
+    bool newTap;
+    int16_t rawAccel[3];
+    
     #define DMPNUMBERTODOUBLECONVERTER 1073741824.0;
 
     ICM_20948_I2C imu;
@@ -56,8 +57,6 @@ private:
     icm_20948_DMP_data_t dmpDataTemp{};
 
     SlimeVR::Configuration::ICM20948CalibrationConfig m_Calibration;
-
-    SlimeVR::Sensors::SensorFusionDMP sfusion;
 
     void saveCalibration(bool repeat);
     void loadCalibration();
@@ -70,6 +69,8 @@ private:
     void readFIFOToEnd();
 
 #define OVERRIDEDMPSETUP true
+
+    Timer<> timer = timer_create_default();
     // TapDetector tapDetector;
 };
 

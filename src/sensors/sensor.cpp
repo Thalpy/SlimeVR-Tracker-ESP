@@ -21,39 +21,30 @@
     THE SOFTWARE.
 */
 #include "sensor.h"
-#include "GlobalVars.h"
+#include "network/network.h"
 #include <i2cscan.h>
 #include "calibration.h"
 
-SensorStatus Sensor::getSensorState() {
+uint8_t Sensor::getSensorState() {
     return isWorking() ? SensorStatus::SENSOR_OK : SensorStatus::SENSOR_OFFLINE;
 }
 
 void Sensor::sendData() {
-    if(newFusedRotation) {
-        newFusedRotation = false;
-        networkConnection.sendRotationData(sensorId, &fusedRotation, DATA_TYPE_NORMAL, calibrationAccuracy);
-
-#ifdef DEBUG_SENSOR
-        m_Logger.trace("Quaternion: %f, %f, %f, %f", UNPACK_QUATERNION(fusedRotation));
-#endif
-    }
+    if(newData) {
+        newData = false;
+        Network::sendRotationData(&quaternion, DATA_TYPE_NORMAL, calibrationAccuracy, sensorId);
 
 #if SEND_ACCELERATION
-    if(newAcceleration) {
-        newAcceleration = false;
-        networkConnection.sendSensorAcceleration(sensorId, acceleration);
-    }
+        {
+            Network::sendAccel(acceleration, sensorId);
+        }
 #endif
-}
 
-void Sensor::printTemperatureCalibrationUnsupported() {
-    m_Logger.error("Temperature calibration not supported for IMU %s", getIMUNameByType(sensorType));
+#ifdef DEBUG_SENSOR
+        m_Logger.trace("Quaternion: %f, %f, %f, %f", UNPACK_QUATERNION(quaternion));
+#endif
+    }
 }
-void Sensor::printTemperatureCalibrationState() { printTemperatureCalibrationUnsupported(); };
-void Sensor::printDebugTemperatureCalibrationState() { printTemperatureCalibrationUnsupported(); };
-void Sensor::saveTemperatureCalibration() { printTemperatureCalibrationUnsupported(); };
-void Sensor::resetTemperatureCalibrationState() { printTemperatureCalibrationUnsupported(); };
 
 const char * getIMUNameByType(int imuType) {
     switch(imuType) {

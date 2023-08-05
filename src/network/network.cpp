@@ -1,6 +1,6 @@
 /*
     SlimeVR Code is placed under the MIT license
-    Copyright (c) 2022 TheDevMinerTV
+    Copyright (c) 2021 Eiren Rain
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,23 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
+#include "network.h"
 
-#ifndef GLOBALVARS_H
-#define GLOBALVARS_H
+bool lastWifiConnected = false;
 
-#include "LEDManager.h"
-#include "status/StatusManager.h"
-#include "configuration/Configuration.h"
-#include "sensors/SensorManager.h"
+void Network::setUp() {
+    WiFiNetwork::setUp();
+}
 
-extern SlimeVR::LEDManager ledManager;
-extern SlimeVR::Status::StatusManager statusManager;
-extern SlimeVR::Configuration::Configuration configuration;
-extern SlimeVR::Sensors::SensorManager sensorManager;
-
-#endif
+void Network::update(Sensor * const sensor, Sensor * const sensor2) {
+    WiFiNetwork::upkeep();
+    if(WiFiNetwork::isConnected()) {
+        if(lastWifiConnected == false) {
+            lastWifiConnected = true;
+            ServerConnection::resetConnection(); // WiFi was reconnected, reconnect to the server
+        }
+        ServerConnection::update(sensor, sensor2);
+    } else {
+        lastWifiConnected = false;
+    }
+}

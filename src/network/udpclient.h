@@ -1,6 +1,6 @@
 /*
     SlimeVR Code is placed under the MIT license
-    Copyright (c) 2022 TheDevMinerTV
+    Copyright (c) 2021 Eiren Rain & SlimeVR contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,21 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
+#ifndef SLIMEVR_UDP_CLIENT_H_
+#define SLIMEVR_UDP_CLIENT_H_
 
-#ifndef GLOBALVARS_H
-#define GLOBALVARS_H
+#include <WiFiUdp.h>
+#include <Arduino.h>
+#include "quat.h"
+#include "sensors/sensor.h"
+#include "wifihandler.h"
+#include "globals.h"
 
-#include "LEDManager.h"
-#include "status/StatusManager.h"
-#include "configuration/Configuration.h"
-#include "sensors/SensorManager.h"
+namespace ServerConnection {
+    void connect();
+    void update(Sensor * const sensor, Sensor * const sensor2);
+    void resetConnection();
+    bool isConnected();
+}
 
-extern SlimeVR::LEDManager ledManager;
-extern SlimeVR::Status::StatusManager statusManager;
-extern SlimeVR::Configuration::Configuration configuration;
-extern SlimeVR::Sensors::SensorManager sensorManager;
-
-#endif
+#endif // SLIMEVR_UDP_CLIENT_H_

@@ -21,6 +21,7 @@
     THE SOFTWARE.
 */
 #include "bno055sensor.h"
+#include "network/network.h"
 #include "globals.h"
 #include "GlobalVars.h"
 
@@ -55,14 +56,14 @@ void BNO055Sensor::motionLoop() {
         Vector3 accel = imu.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
         Vector3 mag = imu.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
 
-        networkConnection.sendInspectionRawIMUData(sensorId, UNPACK_VECTOR(gyro), 255, UNPACK_VECTOR(accel), 255, UNPACK_VECTOR(mag), 255);
+        Network::sendInspectionRawIMUData(sensorId, UNPACK_VECTOR(gyro), 255, UNPACK_VECTOR(accel), 255, UNPACK_VECTOR(mag), 255);
     }
 #endif
 
     // TODO Optimize a bit with setting rawQuat directly
     Quat quat = imu.getQuat();
-    fusedRotation.set(quat.x, quat.y, quat.z, quat.w);
-    fusedRotation *= sensorOffset;
+    quaternion.set(quat.x, quat.y, quat.z, quat.w);
+    quaternion *= sensorOffset;
 
 #if SEND_ACCELERATION
     {
@@ -70,13 +71,18 @@ void BNO055Sensor::motionLoop() {
         this->acceleration[0] = accel.x;
         this->acceleration[1] = accel.y;
         this->acceleration[2] = accel.z;
-        this->newAcceleration = true;
     }
 #endif
 
-    if(!OPTIMIZE_UPDATES || !lastFusedRotationSent.equalsWithEpsilon(fusedRotation)) {
-        newFusedRotation = true;
-        lastFusedRotationSent = fusedRotation;
+#if ENABLE_INSPECTION
+    {
+        Network::sendInspectionFusedIMUData(sensorId, quaternion);
+    }
+#endif
+
+    if(!OPTIMIZE_UPDATES || !lastQuatSent.equalsWithEpsilon(quaternion)) {
+        newData = true;
+        lastQuatSent = quaternion;
     }
 }
 

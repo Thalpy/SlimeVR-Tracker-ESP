@@ -202,6 +202,9 @@ namespace SlimeVR
                 on();
                 m_CurrentStage = ON;
                 break;
+                on();
+                m_CurrentStage = ON;
+                break;
             }
         }
         else

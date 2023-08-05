@@ -22,6 +22,7 @@
 */
 
 #include "ErroneousSensor.h"
+#include "network/network.h"
 #include "GlobalVars.h"
 
 namespace SlimeVR
@@ -33,9 +34,9 @@ namespace SlimeVR
             m_Logger.error("IMU of type %s failed to initialize", getIMUNameByType(m_ExpectedType));
         }
 
-        SensorStatus ErroneousSensor::getSensorState()
+        uint8_t ErroneousSensor::getSensorState()
         {
-            return SensorStatus::SENSOR_ERROR;
+            return SENSOR_ERROR;
         };
     }
 }

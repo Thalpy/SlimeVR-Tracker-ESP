@@ -1,6 +1,6 @@
 /*
     SlimeVR Code is placed under the MIT license
-    Copyright (c) 2022 TheDevMinerTV
+    Copyright (c) 2021 Eiren Rain
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,18 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
+#ifndef SLIMEVR_NETWORK_H_
+#define SLIMEVR_NETWORK_H_
 
-#ifndef GLOBALVARS_H
-#define GLOBALVARS_H
+#include "globals.h"
+#include "wifihandler.h"
+#include "udpclient.h"
+#include "packets.h"
+#include "wifiprovisioning.h"
 
-#include "LEDManager.h"
-#include "status/StatusManager.h"
-#include "configuration/Configuration.h"
-#include "sensors/SensorManager.h"
+namespace Network {
+    void update(Sensor * const sensor, Sensor * const sensor2);
+    void setUp();
+}
 
-extern SlimeVR::LEDManager ledManager;
-extern SlimeVR::Status::StatusManager statusManager;
-extern SlimeVR::Configuration::Configuration configuration;
-extern SlimeVR::Sensors::SensorManager sensorManager;
-
-#endif
+#endif // SLIMEVR_NETWORK_H_

@@ -59,11 +59,6 @@
     #define TARGET_LOOPTIME_MICROS (samplingRateInMillis * 1000)
 #endif
 
-// Packet bundling/aggregation
-#define PACKET_BUNDLING PACKET_BUNDLING_BUFFERED
-// Extra tunable for PACKET_BUNDLING_BUFFERED (10000us = 10ms timeout, 100hz target)
-#define PACKET_BUNDLING_BUFFER_SIZE_MICROS 10000
-
 // Setup for the Magnetometer
 #define useFullCalibrationMatrix true
 
@@ -84,7 +79,7 @@
 // Not recommended for production
 #define ENABLE_INSPECTION false
 
-#define FIRMWARE_BUILD_NUMBER 16
-#define FIRMWARE_VERSION "0.3.3"
+#define FIRMWARE_BUILD_NUMBER 15
+#define FIRMWARE_VERSION "0.3.2"
 
 #endif // SLIMEVR_DEBUG_H_

@@ -20,8 +20,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-#include "wifiprovisioning.h"
-#include "wifihandler.h"
+#include "network.h"
 #include "logging/Logger.h"
 
 // TODO Currently provisioning implemented via SmartConfig

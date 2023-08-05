@@ -28,7 +28,6 @@
 
 #include "DeviceConfig.h"
 #include "logging/Logger.h"
-#include "../motionprocessing/GyroTemperatureCalibrator.h"
 
 namespace SlimeVR {
     namespace Configuration {
@@ -46,9 +45,6 @@ namespace SlimeVR {
             size_t getCalibrationCount() const;
             CalibrationConfig getCalibration(size_t sensorID) const;
             void setCalibration(size_t sensorID, const CalibrationConfig& config);
-
-            bool loadTemperatureCalibration(uint8_t sensorId, GyroTemperatureCalibrationConfig& config);
-            bool saveTemperatureCalibration(uint8_t sensorId, const GyroTemperatureCalibrationConfig& config);
 
         private:
             void loadCalibrations();
